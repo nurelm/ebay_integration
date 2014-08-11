@@ -9,4 +9,8 @@ class EbayIntegration < Sinatra::Base
   get '/get_products' do 
     "Hello World" 
   end
+
+  post '/get_products' do 
+    "Hello World" 
+  end
 end

@@ -1,40 +1,36 @@
-require 'sinatra' 
-require 'json' 
+require 'sinatra'
+require 'json'
 
-class EbayIntegration < Sinatra::Base 
-  get '/' do 
-    "Coming Soon..." 
+class EbayIntegration < Sinatra::Base
+  get '/get_products' do
+    "Coming Soon..."
   end
 
-  get '/get_products' do 
-    "Coming Soon..." 
+  post '/get_orders' do
+    "Coming Soon..."
   end
 
-  post '/get_orders' do 
-    "Coming Soon..." 
+  post '/get_products' do
+    "Coming Soon..."
   end
 
-  post '/get_products' do 
-    "Coming Soon..." 
+  post '/set_inventory' do
+    "Coming Soon..."
   end
 
-  post '/set_inventory' do 
-    "Coming Soon..." 
+  post '/add_product' do
+    [@payload.inspect, @config.inspect]
   end
 
-  post '/add_product' do 
-    "Coming Soon..." 
+  post '/update_product' do
+    "Coming Soon..."
   end
 
-  post '/update_product' do 
-    "Coming Soon..." 
+  post '/add_shipment' do
+    "Coming Soon..."
   end
 
-  post '/add_shipment' do 
-    "Coming Soon..." 
-  end
-
-  post '/update_shipment' do 
-    "Coming Soon..." 
+  post '/update_shipment' do
+    "Coming Soon..."
   end
 end

@@ -1,7 +1,10 @@
 require 'sinatra'
 require 'json'
+require 'endpoint_base'
 
-class EbayIntegration < Sinatra::Base
+class EbayIntegration < EndpointBase::Sinatra::Base
+  enable :logging
+
   get '/get_products' do
     "Coming Soon..."
   end
@@ -19,7 +22,9 @@ class EbayIntegration < Sinatra::Base
   end
 
   post '/add_product' do
-    [@payload.inspect, @config.inspect]
+    logger.info request
+    logger.info @payload
+    result 200, [@payload.inspect, @config.inspect]
   end
 
   post '/update_product' do

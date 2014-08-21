@@ -14,16 +14,16 @@ class Product
 
     @ebay_product[:PrimaryCategory] = { CategoryID: @config[:category_id] }
 
-    @ebay_product[:ReturnPolicy] = {}
-    @ebay_product[:ReturnPolicy][:ReturnsAcceptedOption] = @config[:return_accepted_option]
-    @ebay_product[:RefundPolicy][:RefundOption] = @config[:refund_option]
-    @ebay_product[:RefundPolicy][:ReturnsWithinOption] = @config[:returns_within_option]
-    @ebay_product[:RefundPolicy][:Description] = @config[:refund_policy_description]
+    # @ebay_product[:ReturnPolicy] = {}
+    # @ebay_product[:ReturnPolicy][:ReturnsAcceptedOption] = @config[:return_accepted_option]
+    # @ebay_product[:RefundPolicy][:RefundOption] = @config[:refund_option]
+    # @ebay_product[:RefundPolicy][:ReturnsWithinOption] = @config[:returns_within_option]
+    # @ebay_product[:RefundPolicy][:Description] = @config[:refund_policy_description]
 
-    @ebay_product[:ShippingServiceOptions] = {}
-    @ebay_product[:ShippingServiceOptions][:ShippingServicePriority] = @config[:shipping_service_priority]
-    @ebay_product[:ShippingServiceOptions][:ShippingService] = @config[:shipping_service]
-    @ebay_product[:ShippingServiceOptions][:ShippingServiceCost] = @config[:shipping_service_cost]
+    # @ebay_product[:ShippingServiceOptions] = {}
+    # @ebay_product[:ShippingServiceOptions][:ShippingServicePriority] = @config[:shipping_service_priority]
+    # @ebay_product[:ShippingServiceOptions][:ShippingService] = @config[:shipping_service]
+    # @ebay_product[:ShippingServiceOptions][:ShippingServiceCost] = @config[:shipping_service_cost]
 
     { name: :Title, price: :StartPrice, description: :Description }.each do |wombat_key, ebay_value|
       @ebay_product[ebay_value] = @wombat_product[:wombat_key]

@@ -1,6 +1,7 @@
 require 'sinatra'
 require 'json'
 require 'endpoint_base'
+require './lib/ebay'
 
 class EbayIntegration < EndpointBase::Sinatra::Base
   enable :logging
@@ -22,9 +23,9 @@ class EbayIntegration < EndpointBase::Sinatra::Base
   end
 
   post '/add_product' do
-    logger.info request
-    logger.info @payload
-    result 200, [@payload.inspect, @config.inspect]
+    ebay = Ebay.new(@payload, @config)
+    ebay.add_product
+    result 200
   end
 
   post '/update_product' do

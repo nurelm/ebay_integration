@@ -4,7 +4,7 @@ class Product
   def initialize(wombat_product, config={})
     @wombat_product = wombat_product
     @config = config
-    @ebay_product = 
+    @ebay_product = Hash.new
   end
 
   def ebay_product

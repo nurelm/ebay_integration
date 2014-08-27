@@ -24,6 +24,7 @@ class EbayIntegration < EndpointBase::Sinatra::Base
 
   post '/add_product' do
     response = Ebay.new(@payload, @config).add_product
+    logger.info response
     if response.ack.eq('Success')
       result 200
     else

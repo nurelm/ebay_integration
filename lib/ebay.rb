@@ -2,6 +2,7 @@ require 'json'
 require 'ebay_client'
 require 'active_support/basic_object'
 require './lib/product'
+require './lib/configuration'
 
 class Ebay
   attr_accessor :config, :payload

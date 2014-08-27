@@ -8,7 +8,7 @@ class Product
   end
 
   def ebay_product
-    { country: :Country, currency: :Currency, listing_duration: :ListingDuration, location: :Location, dispatch_time_max: :DispatchTimeMax, paypal_email_address: :PayPalEmailAddress, condition_id: :ConditionID, payment_methods: :PaymentMethods, postal_code: :PostalCode }.each do |womabt_key, ebay_value|
+    { country: :Country, currency: :Currency, listing_duration: :ListingDuration, location: :Location, dispatch_time_max: :DispatchTimeMax, paypal_email_address: :PayPalEmailAddress, condition_id: :ConditionID, postal_code: :PostalCode }.each do |womabt_key, ebay_value|
       @ebay_product[ebay_value] = @config[womabt_key]
     end
 
@@ -20,7 +20,7 @@ class Product
     @ebay_product[:ShippingDetails][:ShippingType] = @config[:shipping_type]
     @ebay_product[:ShippingServiceOptions] = @config[:shipping_service_options].dup
 
-    @ebay_product[:PaymentMethods] = @config.payment_methods.split(',').map(&:strip)
+    @ebay_product[:PaymentMethods] = @config[:payment_methods].split(',').map(&:strip)
 
     @ebay_product[:PictureDetails] = {}
     @ebay_product[:PictureDetails][:PictureURL] = @wombat_product[:images].map { |image| image[:url] }

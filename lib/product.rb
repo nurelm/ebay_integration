@@ -23,10 +23,10 @@ class Product
     @ebay_product[:PaymentMethods] = @config[:payment_methods].split(',').map(&:strip)
 
     @ebay_product[:PictureDetails] = {}
-    @ebay_product[:PictureDetails][:PictureURL] = @wombat_product[:images].map { |image| image[:url] }
+    @ebay_product[:PictureDetails][:PictureURL] = @wombat_product[:images].map { |image| image[:url] } if @wombat_product[:images].is_a?(Array)
 
     @ebay_product[:ItemSpecifics] = {}
-    @ebay_product[:ItemSpecifics][:NameValueList] = @wombat_product[:properties].map { |name, value| { Name: name, Value: value } }
+    @ebay_product[:ItemSpecifics][:NameValueList] = @wombat_product[:properties].map { |name, value| { Name: name, Value: value } } if @wombat_product[:properties].is_a?(Array)
 
     @ebay_product[:Variations] = {}
     @ebay_product[:Variations][:VariationSpecificsSet] = {}
@@ -43,7 +43,7 @@ class Product
       ebay_variant[:VariationSpecifics][:NameValueList] = variant[:options].map { |name, value| {Name: name, Value: value} }
 
       ebay_variant
-    end
+    end if @wombat_product[:variants].is_a?(Array)
 
     @ebay_product[:Variations][:Pictures] = {}
     @ebay_product[:Variations][:Pictures][:VariationSpecificName] = @wombat_product[:options].dup
@@ -53,7 +53,7 @@ class Product
       ebay_variant[:VariationSpecificValue] = variant[:options].map { |name, value| value }
       ebay_variant[:PictureUrl] = variant[:images].map { |image| image[:url] }
       ebay_variant
-    end
+    end if @wombat_product[:variants].is_a?(Array)
 
     { name: :Title, price: :BuyItNowPrice, description: :Description }.each do |wombat_key, ebay_value|
       @ebay_product[ebay_value] = @wombat_product[wombat_key]

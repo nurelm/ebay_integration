@@ -23,8 +23,12 @@ class EbayIntegration < EndpointBase::Sinatra::Base
   end
 
   post '/add_product' do
-    Ebay.new(@payload, @config).add_product
-    result 200
+    response = Ebay.new(@payload, @config).add_product
+    if response.ack.eq('Success')
+      result 200
+    else
+      result 500, response.errors.first.long_message
+    end
   end
 
   post '/update_product' do

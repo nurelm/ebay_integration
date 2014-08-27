@@ -3,6 +3,7 @@ require 'json'
 class Product
   def initialize(wombat_product, config={})
     @wombat_product = wombat_product
+    puts @wombat_product.inspect
     @config = config
     @ebay_product = Hash.new
   end

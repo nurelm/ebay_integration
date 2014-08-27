@@ -10,7 +10,7 @@ class Ebay
   def initialize(payload, config={})
     @payload = payload
     @config = config
-    @ebay_client_api = EbayClient::Api.new(Configuration.new(@config))
+    @ebay_client_api = EbayClient::Api.new(Configuration.new(@config).ebay_client_config)
   end
 
   def add_product

@@ -23,8 +23,7 @@ class EbayIntegration < EndpointBase::Sinatra::Base
   end
 
   post '/add_product' do
-    ebay = Ebay.new(@payload, @config)
-    ebay.add_product
+    Ebay.new(@payload, @config).add_product
     result 200
   end
 

@@ -60,10 +60,10 @@ class Product
       ebay_variant
     end if @wombat_product["variants"].is_a?(Array)
 
-    { "name" => :Title, "sku" => :SKU, "description" => :Description, "id" => :ItemID }.each do |wombat_key, ebay_value|
+    { "name" => :Title, "sku" => :SKU, "description" => :Description }.each do |wombat_key, ebay_value|
       @ebay_product[ebay_value] = @wombat_product[wombat_key]
     end
-    if @wombat_product["variants"].blank?
+    if !@wombat_product["variants"].is_a?(Array) || @wombat_product["variants"].exists?
       @ebay_product[:Quantity] = @wombat_product["quantity"]
       @ebay_product[:StartPrice] = @wombat_product["price"]
     end

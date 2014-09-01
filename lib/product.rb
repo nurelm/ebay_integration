@@ -12,6 +12,8 @@ class Product
       @ebay_product[ebay_value] = @config[womabt_key]
     end
 
+    @ebay_product[:ItemID] = @wombat_product["ebay_item_id"]
+
     @ebay_product[:PrimaryCategory] = { CategoryID: @config["category_id"] }
 
     @ebay_product[:ReturnPolicy] = JSON.parse(@config["return_policy"])

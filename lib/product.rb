@@ -9,20 +9,20 @@ class Product
 
   def ebay_product
     { "country" => :Country, "currency" => :Currency, "listing_duration" => :ListingDuration, "location" => :Location, "dispatch_time_max" => :DispatchTimeMax, "paypal_email_address" => :PayPalEmailAddress, "condition_id" => :ConditionID }.each do |womabt_key, ebay_value|
-      @ebay_product[ebay_value] = @config[womabt_key]
+      @ebay_product[ebay_value] = @config[womabt_key] if @config[womabt_key]
     end
 
-    @ebay_product[:ItemID] = @wombat_product["ebay_item_id"]
+    @ebay_product[:ItemID] = @wombat_product["ebay_item_id"] if @wombat_product["ebay_item_id"]
 
-    @ebay_product[:PrimaryCategory] = { CategoryID: @config["category_id"] }
+    @ebay_product[:PrimaryCategory] = { CategoryID: @config["category_id"] } if @config["category_id"]
 
-    @ebay_product[:ReturnPolicy] = JSON.parse(@config["return_policy"])
+    @ebay_product[:ReturnPolicy] = JSON.parse(@config["return_policy"]) if @config["return_policy"]
 
-    @ebay_product[:ShippingDetails] = {}
-    @ebay_product[:ShippingDetails][:ShippingType] = @config["shipping_type"]
-    @ebay_product[:ShippingDetails][:ShippingServiceOptions] = JSON.parse(@config["shipping_service_options"])
+    @ebay_product[:ShippingDetails] = {} if @config["shipping_service_options"] || @config["shipping_type"]
+    @ebay_product[:ShippingDetails][:ShippingType] = @config["shipping_type"] if @config["shipping_type"]
+    @ebay_product[:ShippingDetails][:ShippingServiceOptions] = JSON.parse(@config["shipping_service_options"]) if @config["shipping_service_options"]
 
-    @ebay_product[:PaymentMethods] = @config["payment_methods"].split(',').map(&:strip)
+    @ebay_product[:PaymentMethods] = @config["payment_methods"].split(',').map(&:strip) if @config["payment_methods"]
 
     @ebay_product[:PictureDetails] = {}
     @ebay_product[:PictureDetails][:PictureURL] = @wombat_product["images"].map { |image| image["url"] } if @wombat_product["images"].is_a?(Array)

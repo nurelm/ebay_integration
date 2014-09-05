@@ -26,7 +26,7 @@ class Ebay
 
   def get_products
     product = Product.new(payload, config)
-    @ebay_client_api.get_seller_list product.search_params
+    p @ebay_client_api.get_seller_list product.search_params
   end
 
   def add_shipment

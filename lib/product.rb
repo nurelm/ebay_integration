@@ -4,7 +4,7 @@ class Product
   def initialize(wombat_product, config={})
     @wombat_product = wombat_product["product"]
     @config = config
-    @ebay_product = Hash.new
+    @ebay_product = {}
   end
 
   def search_params
@@ -16,7 +16,7 @@ class Product
       @ebay_product[ebay_value] = @config[womabt_key] if @config[womabt_key]
     end
 
-    @ebay_product[:ItemID] = @wombat_product["ebay_item_id"] if @wombat_product["ebay_item_id"]
+    @ebay_product[:ItemID] = @wombat_product["id"]# if @wombat_product["ebay_item_id"]
 
     @ebay_product[:PrimaryCategory] = { CategoryID: @config["category_id"] } if @config["category_id"]
 
@@ -71,10 +71,44 @@ class Product
       @ebay_product[:StartPrice] = @wombat_product["price"]
     end
 
+    @ebay_product[:listing_details] = { }
+    @ebay_product[:listing_details][:start_time] = @wombat_product["available_on"]
+
     { "name" => :Title, "sku" => :SKU, "description" => :Description }.each do |wombat_key, ebay_value|
       @ebay_product[ebay_value] = @wombat_product[wombat_key]
     end
 
     { item: @ebay_product }
+  end
+
+  def self.wombat_product_hash(ebay_product)
+    wombat_product = {}
+    { "id" => :item_id, "ebay_item_id" => :item_id, "name" => :title, "sku" => :sku, "description" => :description }.each do |wombat_key, ebay_value|
+      wombat_product[ebay_value] = ebay_product[wombat_key]
+    end
+
+    wombat_product[:images] = []
+    wombat_product[:images] = [ebay_product[:picture_details][:picture_url]].flatten.map { |picture_url| { url: picture_url } } if ebay_product[:picture_details][:picture_url]
+
+    if ebay_product[:variations] && ebay_product[:variations][:variation] && !ebay_product[:variations][:variation].empty?
+      wombat_product[:variants] = [ebay_product[:variations][:variation]].flatten.map do |variantion|
+        wombat_variant = {}
+
+        { sku: :SKU, start_price: :price, quantity: :quantity }.each do |wombat_key, ebay_value|
+          wombat_variant[wombat_key] = variantion[ebay_value]
+        end
+
+        variantion[:variation_specifics][:name_value_list].each do |name_value|
+          wombat_variant[:options].merge({ name_value[:name] => name_value[:value] })
+        end
+
+        wombat_variant
+      end
+    else
+      wombat_product[:quantity] = ebay_product[:quantity]
+      wombat_product[:start_price] = ebay_product[:start_price]
+    end
+
+    { product: wombat_product }
   end
 end

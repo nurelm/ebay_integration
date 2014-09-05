@@ -34,7 +34,7 @@ class Product
     @ebay_product[:ItemSpecifics] = {}
     @ebay_product[:ItemSpecifics][:NameValueList] = @wombat_product["properties"].map { |name, value| { Name: name, Value: value } } if @wombat_product["properties"].is_a?(Array)
 
-    if @wombat_product["variants"].is_a?(Array) && !@wombat_product["variants"].first.nil?
+    if @wombat_product["variants"].is_a?(Array) && @wombat_product["variants"].first
       @ebay_product[:Variations] = {}
       @ebay_product[:Variations][:VariationSpecificsSet] = {}
 
@@ -49,7 +49,7 @@ class Product
           ebay_variant[ebay_value] = variant[wombat_key]
         end
 
-        ebay_variant[:Deleted] = true if variant["deleted_at"].is_a?(String) && variant["deleted_at"].strip.empty?
+        ebay_variant[:Deleted] = true if variant["deleted_at"].is_a?(String) && !variant["deleted_at"].strip.empty?
 
         ebay_variant[:VariationSpecifics] = {}
         ebay_variant[:VariationSpecifics][:NameValueList] = variant["options"].map { |name, value| { Name: name, Value: value } }
@@ -66,13 +66,13 @@ class Product
         ebay_variant[:PictureURL] = variant["images"].map { |image| image["url"] }
         ebay_variant
       end
-
-      { "name" => :Title, "sku" => :SKU, "description" => :Description }.each do |wombat_key, ebay_value|
-        @ebay_product[ebay_value] = @wombat_product[wombat_key]
-      end
     else
       @ebay_product[:Quantity] = @wombat_product["quantity"]
       @ebay_product[:StartPrice] = @wombat_product["price"]
+    end
+
+    { "name" => :Title, "sku" => :SKU, "description" => :Description }.each do |wombat_key, ebay_value|
+      @ebay_product[ebay_value] = @wombat_product[wombat_key]
     end
 
     { item: @ebay_product }

@@ -9,6 +9,10 @@ class EbayIntegration < EndpointBase::Sinatra::Base
   post '/get_products' do
     response = Ebay.new(@payload, @config).get_products
     if response.success?
+      add_parameter 'ebay_start_time_from', Time.now - 30*24*60*60
+      add_parameter 'ebay_start_time_to', Time.now - 30*24*60*60
+      add_parameter 'ebay_page_number', @config['ebay_page_number'].to_i + 1 if @payload['ebay_page_number']
+
       result 200
     else
       result 500, response.errors.first.long_message
@@ -16,10 +20,6 @@ class EbayIntegration < EndpointBase::Sinatra::Base
   end
 
   post '/get_orders' do
-    "Coming Soon..."
-  end
-
-  post '/get_products' do
     "Coming Soon..."
   end
 

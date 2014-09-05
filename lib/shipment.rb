@@ -8,7 +8,9 @@ class Shipment
   end
 
   def ebay_shipment
-    @ebay_shipment[:OrderID] = @wombat_shipment["order_id"].gsub(/\A(R)/, '')
+    @ebay_shipment[:OrderID] = @wombat_shipment['ebay_order_id']
+    @ebay_shipment[:shipped] = true unless @wombat_shipment['shipped_at'].strip.empty?
+
     @ebay_shipment[:Shipment] = {}
     @ebay_shipment[:Shipment][:ShipmentTrackingDetails] = {}
     @ebay_shipment[:Shipment][:ShippedTime] = @wombat_shipment["shipped_at"]

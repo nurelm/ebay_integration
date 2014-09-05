@@ -24,10 +24,10 @@ class Ebay
     @ebay_client_api.revise_fixed_price_item product.ebay_product
   end
 
-  # def get_products
-  #   product = Product.new(payload, config)
-  #   @ebay_client_api.get_seller_list start_time_from: (Time.now - (2*7*24*60*60)).to_s, start_time_to: (Time.now + (2*7*24*60*60)).to_s, detail_level: 'ReturnAll', pagination: { :}
-  # end
+  def get_products
+    product = Product.new(payload, config)
+    @ebay_client_api.get_seller_list product.search_params
+  end
 
   def add_shipment
     shipment = Shipment.new(payload, config)

@@ -15,7 +15,7 @@ class EbayIntegration < EndpointBase::Sinatra::Base
 
       response.payload[:item_array][:item].each do |item|
         add_object 'product', Product.wombat_product_hash(item)
-      end
+      end if response.payload[:item_array]
 
       result 200
     else

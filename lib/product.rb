@@ -108,7 +108,7 @@ class Product
       end
     else
       wombat_product[:quantity] = ebay_product[:quantity]
-      wombat_product[:start_price] = ebay_product[:start_price]
+      wombat_product[:start_price] = ebay_product[:price]
     end
 
     wombat_product

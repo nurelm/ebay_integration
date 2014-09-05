@@ -98,6 +98,8 @@ class Product
           wombat_variant[wombat_key] = variantion[ebay_value]
         end
 
+        wombat_variant[:options] = {}
+
         variantion[:variation_specifics][:name_value_list].each do |name_value|
           wombat_variant[:options].merge({ name_value[:name] => name_value[:value] })
         end
@@ -109,6 +111,6 @@ class Product
       wombat_product[:start_price] = ebay_product[:start_price]
     end
 
-    { product: wombat_product }
+    wombat_product
   end
 end

@@ -84,7 +84,7 @@ class Product
   def self.wombat_product_hash(ebay_product)
     wombat_product = {}
     { "id" => :item_id, "ebay_item_id" => :item_id, "name" => :title, "sku" => :sku, "description" => :description }.each do |wombat_key, ebay_value|
-      wombat_product[ebay_value] = ebay_product[wombat_key]
+      wombat_product[wombat_key] = ebay_product[ebay_value]
     end
 
     wombat_product[:images] = []

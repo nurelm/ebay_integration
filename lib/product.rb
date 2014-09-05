@@ -34,7 +34,7 @@ class Product
     @ebay_product[:ItemSpecifics] = {}
     @ebay_product[:ItemSpecifics][:NameValueList] = @wombat_product["properties"].map { |name, value| { Name: name, Value: value } } if @wombat_product["properties"].is_a?(Array)
 
-    if @wombat_product["variants"].is_a?(Array)
+    if @wombat_product["variants"].is_a?(Array) && !@wombat_product["variants"].first.nil?
       @ebay_product[:Variations] = {}
       @ebay_product[:Variations][:VariationSpecificsSet] = {}
 
@@ -65,12 +65,12 @@ class Product
         ebay_variant[:VariationSpecificValue] = variant["options"].map { |name, value| value }
         ebay_variant[:PictureURL] = variant["images"].map { |image| image["url"] }
         ebay_variant
-      end if @wombat_product["variants"].is_a?(Array)
+      end
 
       { "name" => :Title, "sku" => :SKU, "description" => :Description }.each do |wombat_key, ebay_value|
         @ebay_product[ebay_value] = @wombat_product[wombat_key]
       end
-    elsif @wombat_product["variants"].first.nil?
+    else
       @ebay_product[:Quantity] = @wombat_product["quantity"]
       @ebay_product[:StartPrice] = @wombat_product["price"]
     end

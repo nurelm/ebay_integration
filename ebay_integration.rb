@@ -11,7 +11,7 @@ class EbayIntegration < EndpointBase::Sinatra::Base
     if response.success?
       add_parameter 'ebay_start_time_from', Time.now - 30*24*60*60
       add_parameter 'ebay_start_time_to', Time.now - 30*24*60*60
-      add_parameter 'ebay_page_number', @config[:ebay_page_number].to_i + 1 if response.payload[:has_more_items]
+      add_parameter 'ebay_page_number', (response.payload[:has_more_items] ? @config[:ebay_page_number].to_i + 1 : 1)
 
       response.payload[:item_array][:item].each do |item|
         add_object 'product', Product.wombat_product_hash(item)

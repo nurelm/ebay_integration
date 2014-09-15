@@ -17,6 +17,7 @@ class Product
     end
 
     @ebay_product[:ItemID] = @wombat_product["ebay_item_id"] if @wombat_product["ebay_item_id"]
+    @ebay_product[:ApplicationData] = @wombat_product["id"]
 
     @ebay_product[:PrimaryCategory] = { CategoryID: @config["category_id"] } if @config["category_id"]
 
@@ -81,8 +82,33 @@ class Product
     { item: @ebay_product }
   end
 
+  def ebay_product_inventory
+    @ebay_product[:ItemID] = @wombat_product["ebay_item_id"]
+
+    if @wombat_product["variants"].is_a?(Array) && @wombat_product["variants"].first
+      @ebay_product[:Variations] = {}
+      @ebay_product[:Variations][:VariationSpecificsSet] = {}
+
+      @ebay_product[:Variations][:Variation] = @wombat_product["variants"].map do |variant|
+        ebay_variant = {}
+
+        ebay_variant[:Quantity] = variant['quantity']
+
+        ebay_variant[:VariationSpecifics] = {}
+        ebay_variant[:VariationSpecifics][:NameValueList] = variant["options"].map { |name, value| { Name: name, Value: value } }
+
+        ebay_variant
+      end
+    else
+      @ebay_product[:Quantity] = @wombat_product["quantity"]
+    end
+
+    { item: @ebay_product }
+  end
+
   def self.wombat_product_hash(ebay_product)
     wombat_product = {}
+
     { "id" => :item_id, "ebay_item_id" => :item_id, "name" => :title, "sku" => :sku, "description" => :description }.each do |wombat_key, ebay_value|
       wombat_product[wombat_key] = ebay_product[ebay_value]
     end

@@ -4,6 +4,7 @@ require 'active_support/basic_object'
 require './lib/product'
 require './lib/shipment'
 require './lib/configuration'
+require './lib/order'
 
 class Ebay
   attr_accessor :config, :payload
@@ -24,9 +25,19 @@ class Ebay
     @ebay_client_api.revise_fixed_price_item product.ebay_product
   end
 
+  def set_inventory
+    product = Product.new(payload, config)
+    @ebay_client_api.revise_fixed_price_item product.ebay_product
+  end
+
   def get_products
     product = Product.new(payload, config)
-    p @ebay_client_api.get_seller_list product.search_params
+    @ebay_client_api.get_seller_list product.search_params
+  end
+
+  def get_orders
+    order = Order.new(config)
+    @ebay_client_api.get_orders order.search_params
   end
 
   def add_shipment

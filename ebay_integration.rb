@@ -24,11 +24,29 @@ class EbayIntegration < EndpointBase::Sinatra::Base
   end
 
   post '/get_orders' do
-    "Coming Soon..."
+    response = Ebay.new(@payload, @config).get_orders
+
+    if response.success?
+      add_parameter 'ebay_mod_time_from', Time.now - 30*24*60*60
+      add_parameter 'ebay_page_number', (response.payload[:has_more_items] ? @config[:ebay_page_number].to_i + 1 : 1)
+
+      response.payload[:order_array][:order].each do |item|
+        add_object 'order', Order.wombat_order_hash(item)
+      end if response.payload[:order_array]
+
+      result 200
+    else
+      result 500, response.errors.first.long_message
+    end
   end
 
   post '/set_inventory' do
-    "Coming Soon..."
+    response = Ebay.new(@payload, @config).set_inventory
+    if response.success?
+      result 200
+    else
+      result 500, response.errors.first.long_message
+    end
   end
 
   post '/add_product' do

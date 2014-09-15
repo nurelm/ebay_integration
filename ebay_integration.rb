@@ -13,7 +13,7 @@ class EbayIntegration < EndpointBase::Sinatra::Base
       add_parameter 'ebay_start_time_to', Time.now - 30*24*60*60
       add_parameter 'ebay_page_number', (response.payload[:has_more_items] ? @config[:ebay_page_number].to_i + 1 : 1)
 
-      response.payload[:item_array][:item].each do |item|
+      [response.payload[:item_array][:item]].flatten.each do |item|
         add_object 'product', Product.wombat_product_hash(item)
       end if response.payload[:item_array]
 
@@ -28,9 +28,11 @@ class EbayIntegration < EndpointBase::Sinatra::Base
 
     if response.success?
       add_parameter 'ebay_mod_time_from', Time.now - 30*24*60*60
-      add_parameter 'ebay_page_number', (response.payload[:has_more_items] ? @config[:ebay_page_number].to_i + 1 : 1)
+      add_parameter 'ebay_page_number', (response.payload[:has_more_orders] ? @config[:ebay_page_number].to_i + 1 : 1)
 
-      response.payload[:order_array][:order].each do |item|
+      logger.info response.payload[:order_array].inspect
+
+      [response.payload[:order_array][:order]].flatten.each do |item|
         add_object 'order', Order.wombat_order_hash(item)
       end if response.payload[:order_array]
 

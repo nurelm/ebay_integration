@@ -43,7 +43,7 @@ class Order
     wombat_order["totals"]["tax"] = ebay_order[:shipping_details][:sales_tax][:sales_tax_amount]
     wombat_order["totals"]["shipping"] = ebay_order[:shipping_service_selected][:shipping_service_cost]
     wombat_order["totals"]["item"] = ebay_order[:subtotal]
-    wombat_order["totals"]["total"] = ebay_order[:total]
+    wombat_order["totals"]["order"] = ebay_order[:total]
 
     wombat_order["payments"] = [ebay_order[:monetary_details][:payments][:payment]].flatten.map do |payment|
       womabt_payment = {}

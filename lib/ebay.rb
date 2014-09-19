@@ -5,6 +5,7 @@ require './lib/product'
 require './lib/shipment'
 require './lib/configuration'
 require './lib/order'
+require './lib/inventory'
 
 class Ebay
   attr_accessor :config, :payload

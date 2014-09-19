@@ -45,6 +45,6 @@ class Inventory
       wombat_inventories = { inventories: [wombat_inventory] }
     end
 
-    wombat_inventories
+    wombat_inventories[:inventories]
   end
 end

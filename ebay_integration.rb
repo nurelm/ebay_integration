@@ -33,6 +33,7 @@ class EbayIntegration < EndpointBase::Sinatra::Base
 
       [response.payload[:order_array][:order]].flatten.each do |item|
         add_object 'order', Order.wombat_order_hash(item)
+        add_object 'shipment', Shipment.wombat_shipment_hash(item)
       end if response.payload[:order_array]
 
       result 200

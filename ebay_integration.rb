@@ -15,6 +15,7 @@ class EbayIntegration < EndpointBase::Sinatra::Base
 
       [response.payload[:item_array][:item]].flatten.each do |item|
         add_object 'product', Product.wombat_product_hash(item)
+        Inventory.wombat_inventories_hash(item).each { |inventory_hash| add_object 'inventory', inventory_hash  }
       end if response.payload[:item_array]
 
       result 200
@@ -27,10 +28,8 @@ class EbayIntegration < EndpointBase::Sinatra::Base
     response = Ebay.new(@payload, @config).get_orders
 
     if response.success?
-      add_parameter 'ebay_mod_time_from', Time.now - 30*24*60*60
+      add_parameter 'ebay_mod_time_from', Time.now - 29*24*60*60
       add_parameter 'ebay_page_number', (response.payload[:has_more_orders] ? @config[:ebay_page_number].to_i + 1 : 1)
-
-      logger.info response.payload[:order_array].inspect
 
       [response.payload[:order_array][:order]].flatten.each do |item|
         add_object 'order', Order.wombat_order_hash(item)

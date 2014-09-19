@@ -26,8 +26,8 @@ class Ebay
   end
 
   def set_inventory
-    product = Product.new(payload, config)
-    @ebay_client_api.revise_fixed_price_item product.ebay_product
+    inventory = Inventory.new(payload, config)
+    @ebay_client_api.revise_inventory_status inventory.ebay_inventory
   end
 
   def get_products

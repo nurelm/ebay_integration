@@ -30,7 +30,7 @@ class Product
     @ebay_product[:PaymentMethods] = @config["payment_methods"].split(',').map(&:strip) if @config["payment_methods"]
 
     @ebay_product[:PictureDetails] = {}
-    @ebay_product[:PictureDetails][:PictureURL] = @wombat_product["images"].map { |image| image["url"] } if @wombat_product["images"].is_a?(Array)
+    @ebay_product[:PictureDetails][:PictureURL] = @wombat_product["images"].map { |image| image["url"].split('&').first } if @wombat_product["images"].is_a?(Array)
 
     @ebay_product[:ItemSpecifics] = {}
     @ebay_product[:ItemSpecifics][:NameValueList] = @wombat_product["properties"].map { |name, value| { Name: name, Value: value } } if @wombat_product["properties"].is_a?(Array)
@@ -64,7 +64,7 @@ class Product
       @ebay_product[:Variations][:Pictures][:VariationSpecificPictureSet] = @wombat_product["variants"].map do |variant|
         ebay_variant = {}
         ebay_variant[:VariationSpecificValue] = variant["options"].map { |name, value| value }
-        ebay_variant[:PictureURL] = variant["images"].map { |image| image["url"] }
+        ebay_variant[:PictureURL] = variant["images"].map { |image| image["url"].split('&').first }
         ebay_variant
       end
     else
@@ -82,34 +82,12 @@ class Product
     { item: @ebay_product }
   end
 
-  def ebay_product_inventory
-    @ebay_product[:ItemID] = @wombat_product["ebay_item_id"]
-
-    if @wombat_product["variants"].is_a?(Array) && @wombat_product["variants"].first
-      @ebay_product[:Variations] = {}
-      @ebay_product[:Variations][:VariationSpecificsSet] = {}
-
-      @ebay_product[:Variations][:Variation] = @wombat_product["variants"].map do |variant|
-        ebay_variant = {}
-
-        ebay_variant[:Quantity] = variant['quantity']
-
-        ebay_variant[:VariationSpecifics] = {}
-        ebay_variant[:VariationSpecifics][:NameValueList] = variant["options"].map { |name, value| { Name: name, Value: value } }
-
-        ebay_variant
-      end
-    else
-      @ebay_product[:Quantity] = @wombat_product["quantity"]
-    end
-
-    { item: @ebay_product }
-  end
-
   def self.wombat_product_hash(ebay_product)
     wombat_product = {}
 
-    { "id" => :item_id, "ebay_item_id" => :item_id, "name" => :title, "sku" => :sku, "description" => :description }.each do |wombat_key, ebay_value|
+    wombat_product["id"] = ebay_product[:application_data] || ebay_product[:item_id]
+
+    { "ebay_item_id" => :item_id, "name" => :title, "sku" => :sku, "description" => :description }.each do |wombat_key, ebay_value|
       wombat_product[wombat_key] = ebay_product[ebay_value]
     end
 
@@ -120,7 +98,7 @@ class Product
       wombat_product[:variants] = [ebay_product[:variations][:variation]].flatten.map do |variantion|
         wombat_variant = {}
 
-        { sku: :SKU, start_price: :price, quantity: :quantity }.each do |wombat_key, ebay_value|
+        { sku: :sku, start_price: :price, quantity: :quantity }.each do |wombat_key, ebay_value|
           wombat_variant[wombat_key] = variantion[ebay_value]
         end
 

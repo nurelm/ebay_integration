@@ -27,8 +27,10 @@ class Shipment
       wombat_shipment[wombat_key] = ebay_order[ebay_value]
     end
 
-    wombat_shipment["tracking"] = ebay_order[:shipping_details][:shipment_tracking_details][:shipment_tracking_number]
-    wombat_shipment["shipping_method"] = ebay_order[:shipping_details][:shipment_tracking_details][:shipping_carrier_used]
+    if ebay_order[:shipping_details][:shipment_tracking_details]
+      wombat_shipment["tracking"] = ebay_order[:shipping_details][:shipment_tracking_details][:shipment_tracking_number]
+      wombat_shipment["shipping_method"] = ebay_order[:shipping_details][:shipment_tracking_details][:shipping_carrier_used]
+    end
 
     wombat_shipment["shipped_at"] = ebay_order[:shipped_time]
 

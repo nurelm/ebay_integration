@@ -24,7 +24,7 @@ class Shipment
     wombat_shipment = {}
 
     { "id" => :order_id, "ebay_order_id" => :order_id }.each do |wombat_key, ebay_value|
-      wombat_shipment[wombat_key] = ebay_shipment[ebay_value]
+      wombat_shipment[wombat_key] = ebay_order[ebay_value]
     end
 
     wombat_shipment["tracking"] = ebay_order[:shipping_details][:shipment_tracking_details][:shipment_tracking_number]

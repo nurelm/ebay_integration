@@ -28,7 +28,7 @@ class EbayIntegration < EndpointBase::Sinatra::Base
     response = Ebay.new(@payload, @config).get_orders
 
     if response.success?
-      add_parameter 'ebay_mod_time_from', Time.now - 29*24*60*60
+      add_parameter 'ebay_mod_time_from', Time.now - 25*24*60*60
       add_parameter 'ebay_page_number', (response.payload[:has_more_orders] ? @config[:ebay_page_number].to_i + 1 : 1)
 
       [response.payload[:order_array][:order]].flatten.each do |item|

@@ -24,8 +24,9 @@ class Inventory
 
         wombat_inventory["id"] = "#{ebay_product[:item_id]} - #{variation[:sku]}"
         wombat_inventory["product_id"] = ebay_product[:application_data] || ebay_product[:item_id]
+        wombat_inventory["ebay_product_id"] = ebay_product[:item_id]
 
-        { ebay_sku: :sku, quantity: :quantity, ebay_product_id: :item_id }.each do |wombat_key, ebay_value|
+        { ebay_sku: :sku, quantity: :quantity }.each do |wombat_key, ebay_value|
           wombat_inventory[wombat_key] = variation[ebay_value] if variation[ebay_value]
         end
 
@@ -38,7 +39,7 @@ class Inventory
       wombat_inventory["product_id"] = ebay_product[:application_data] || ebay_product[:item_id]
 
       { ebay_sku: :sku, quantity: :quantity, ebay_product_id: :item_id }.each do |wombat_key, ebay_value|
-        wombat_inventory[wombat_key] = variation[ebay_value] if variation[ebay_value]
+        wombat_inventory[wombat_key] = ebay_product[ebay_value] if ebay_product[ebay_value]
       end
 
       wombat_inventories = { inventories: [wombat_inventory] }

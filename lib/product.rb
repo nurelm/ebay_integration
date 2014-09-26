@@ -18,7 +18,7 @@ class Product
     @ebay_product[:ShippingDetails] = ebay_product_shipping_details(@config) if ebay_product_shipping_details_present?(@config)
     @ebay_product[:PaymentMethods] = ebay_product_payment_methods(@config) if @config["payment_methods"]
     @ebay_product[:PictureDetails] = ebay_product_picture_details(@wombat_product) if @wombat_product["images"].is_a?(Array)
-    @ebay_product[:ItemSpecifics] = ebay_product_item_specifics(@wombat_product) if @wombat_product["properties"].is_a?(Array)
+    @ebay_product[:ItemSpecifics] = ebay_product_item_specifics(@wombat_product) if @wombat_product["properties"]
 
     if ebay_product_variants_present?(@wombat_product)
       @ebay_product[:Variations] = ebay_product_variantions_set(@wombat_product)
@@ -119,6 +119,7 @@ class Product
       shipping_details = {}
       shipping_details[:ShippingType] = config["shipping_type"] if config["shipping_type"]
       shipping_details[:ShippingServiceOptions] = JSON.parse(config["shipping_service_options"]) if config["shipping_service_options"]
+      shipping_details
     end
 
     def ebay_product_shipping_details_present?(config)
@@ -175,6 +176,8 @@ class Product
       variation_specifics[:NameValueList] = @wombat_product["options"].map do |key|
         { Name: key, Value: option_types.map { |option_type| option_type[key] } }
       end
+
+      variation_specifics
     end
 
     def ebay_product_variantions_set(wombat_product)

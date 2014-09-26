@@ -63,5 +63,4 @@ class Shipment
 
       shipping_address
     end
-
 end

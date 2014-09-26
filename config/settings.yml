@@ -1,0 +1,9 @@
+sandbox:
+  devid: <%= ENV['SANDBOX_DEVID'] %>
+  certid: <%= ENV['SANDBOX_CERTID'] %>
+  appid: <%= ENV['SANDBOX_APPID'] %>
+
+production:
+  devid: <%= ENV['PRODUCTION_DEVID'] %>
+  certid: <%= ENV['PRODUCTION_CERTID'] %>
+  appid: <%= ENV['PRODUCTION_APPID'] %>

@@ -47,11 +47,11 @@ class Product
   end
 
   private
-    def wombat_product_id(ebay_product)
+    def self.wombat_product_id(ebay_product)
       ebay_product[:application_data] || ebay_product[:item_id]
     end
 
-    def wombat_product_initial_values(ebay_product)
+    def self.wombat_product_initial_values(ebay_product)
       wombat_product = {}
 
       wombat_product["id"] = wombat_product_id(ebay_product)
@@ -63,19 +63,19 @@ class Product
       wombat_product
     end
 
-    def wombat_product_images(ebay_product)
+    def self.wombat_product_images(ebay_product)
       [ebay_product[:picture_details][:picture_url]].flatten.map { |picture_url| { url: picture_url } }
     end
 
-    def wombat_variants(ebay_product)
+    def self.wombat_variants(ebay_product)
       [ebay_product[:variations][:variation]].flatten.map { |variation| wombat_variant(variation) }
     end
 
-    def wombat_variants_present?(ebay_product)
+    def self.wombat_variants_present?(ebay_product)
       ebay_product[:variations] && ebay_product[:variations][:variation] && !ebay_product[:variations][:variation].empty?
     end
 
-    def wombat_variant(variation)
+    def self.wombat_variant(variation)
       wombat_variant = {}
 
       { sku: :sku, start_price: :price, quantity: :quantity }.each do |wombat_key, ebay_value|

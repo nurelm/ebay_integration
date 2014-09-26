@@ -25,7 +25,7 @@ class Order
 
   private
 
-    def wombat_order_initial_values(ebay_order)
+    def self.wombat_order_initial_values(ebay_order)
       wombat_order = {}
 
       WOMBAT_ORDER_INITIAL_VALUES_MAPPING.each do |wombat_key, ebay_value|
@@ -35,7 +35,7 @@ class Order
       wombat_order
     end
 
-    def wombat_order_shipping_address(ebay_order)
+    def self.wombat_order_shipping_address(ebay_order)
       shipping_address = {}
 
       WOMBAT_ORDER_SHIPPING_VALUES_MAPPING.each do |wombat_key, ebay_value|
@@ -45,35 +45,35 @@ class Order
       shipping_address
     end
 
-    def wombat_order_status(ebay_order)
+    def self.wombat_order_status(ebay_order)
       ebay_order[:checkout_status][:status]
     end
 
-    def wombat_order_line_items(ebay_order)
+    def self.wombat_order_line_items(ebay_order)
       [ebay_order[:transaction_array][:transaction]].flatten.map { |transaction| wombat_order_line_item(transaction) }
     end
 
-    def wombat_order_line_item(transaction)
+    def self.wombat_order_line_item(transaction)
       { "price" => transaction[:transaction_price], "quantity" => transaction[:quantity_purchased], "title" => transaction[:item][:title], "ebay_product_id" => transaction[:item][:item_id] }
     end
 
-    def line_items_present?(ebay_order)
+    def self.line_items_present?(ebay_order)
       ebay_order[:transaction_array]
     end
 
-    def wombat_order_payments(ebay_order)
+    def self.wombat_order_payments(ebay_order)
       [ebay_order[:monetary_details][:payments][:payment]].flatten.map { |payment| wombat_order_payment(ebay_order, payment) }
     end
 
-    def wombat_order_payment(ebay_order, payment)
+    def self.wombat_order_payment(ebay_order, payment)
       { "status" => payment[:payment_status], "amount" => payment[:payment_amount], "payment_method" => ebay_order[:checkout_status][:payment_method] }
     end
 
-    def payments_present?(ebay_order)
+    def self.payments_present?(ebay_order)
       ebay_order[:monetary_details] && ebay_order[:monetary_details][:payments] && ebay_order[:monetary_details][:payments][:payment]
     end
 
-    def wombat_order_totals(ebay_order)
+    def self.wombat_order_totals(ebay_order)
       { "adjustment" => ebay_order[:adjustment_amount], "tax" => ebay_order[:shipping_details][:sales_tax][:sales_tax_amount], "shipping" => ebay_order[:shipping_service_selected][:shipping_service_cost], "item" => ebay_order[:subtotal], "order" => ebay_order[:total] }
     end
 end

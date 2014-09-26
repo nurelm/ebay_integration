@@ -26,7 +26,7 @@ class Shipment
     end
 
     wombat_shipment["shipped_at"] = ebay_order[:shipped_time]
-    wombat_shipment["shipping_address"] = wombat_shipment_initial_values(ebay_order)
+    wombat_shipment["shipping_address"] = wombat_shipment_shipping_address(ebay_order)
 
     wombat_shipment
   end
@@ -44,7 +44,7 @@ class Shipment
       { :ShipmentTrackingDetails => @wombat_shipment["tracking"], :ShippingCarrierUsed => @wombat_shipment["shipping_method"].gsub(/[^A-z0-9\ ]/, '') }
     end
 
-    def wombat_shipment_initial_values(ebay_order)
+    def self.wombat_shipment_initial_values(ebay_order)
       wombat_shipment = {}
 
       WOMBAT_SHIPMENT_INITIAL_VALUES_MAPPING.each do |wombat_key, ebay_value|
@@ -54,7 +54,7 @@ class Shipment
       wombat_shipment
     end
 
-    def wombat_shipment_shipping_address(ebay_order)
+    def self.wombat_shipment_shipping_address(ebay_order)
       shipping_address = {}
 
       WOMBAT_SHIPMENT_SHIPPING_VALUES_MAPPING.each do |wombat_key, ebay_value|

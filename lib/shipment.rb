@@ -48,7 +48,7 @@ class Shipment
       wombat_shipment = {}
 
       WOMBAT_SHIPMENT_INITIAL_VALUES_MAPPING.each do |wombat_key, ebay_value|
-        wombat_shipment[wombat_key] = ebay_shipment[ebay_value]
+        wombat_shipment[wombat_key] = ebay_order[ebay_value]
       end
 
       wombat_shipment
@@ -58,7 +58,7 @@ class Shipment
       shipping_address = {}
 
       WOMBAT_SHIPMENT_SHIPPING_VALUES_MAPPING.each do |wombat_key, ebay_value|
-        shipping_address[wombat_key] = ebay_shipment[:shipping_address][ebay_value]
+        shipping_address[wombat_key] = ebay_order[:shipping_address][ebay_value]
       end
 
       shipping_address

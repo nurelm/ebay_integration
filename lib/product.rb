@@ -8,7 +8,7 @@ class Product
   end
 
   def search_params
-    { start_time_from: @config["ebay_start_time_from"], start_time_to: @config["ebay_start_time_to"], end_time_from: TIme.now.to_s, end_time_to: (Time.now + 30*24*60*60), include_variations: 'true', detail_level: 'ReturnAll', pagination: { entries_per_page: 25, page_number: @config['ebay_page_number'] } }
+    { start_time_from: @config["ebay_start_time_from"], start_time_to: @config["ebay_start_time_to"], end_time_from: Time.now.to_s, end_time_to: (Time.now + 30*24*60*60), include_variations: 'true', detail_level: 'ReturnAll', pagination: { entries_per_page: 25, page_number: @config['ebay_page_number'] } }
   end
 
   def ebay_product

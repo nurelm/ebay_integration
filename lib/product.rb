@@ -8,7 +8,7 @@ class Product
   end
 
   def search_params
-    { start_time_from: @config["ebay_start_time_from"], start_time_to: @config["ebay_start_time_to"], include_variations: 'true', detail_level: 'ReturnAll', pagination: { entries_per_page: 25, page_number: @config['ebay_page_number'] } }
+    { start_time_from: @config["ebay_start_time_from"], start_time_to: @config["ebay_start_time_to"], end_time_from: TIme.now.to_s, end_time_to: (Time.now + 30*24*60*60), include_variations: 'true', detail_level: 'ReturnAll', pagination: { entries_per_page: 25, page_number: @config['ebay_page_number'] } }
   end
 
   def ebay_product
@@ -182,11 +182,11 @@ class Product
 
     def ebay_product_variantions_set(wombat_product)
       ebay_variations_set = {}
-      ebay_variations_set[:VariationSpecificsSet] = ebay_product_variation_specifics(@wombat_product)
-      ebay_variations_set[:Variation] = ebay_product_variants(@wombat_product)
+      ebay_variations_set[:VariationSpecificsSet] = ebay_product_variation_specifics(wombat_product) if wombat_product["options"]
+      ebay_variations_set[:Variation] = ebay_product_variants(wombat_product)
       ebay_variations_set[:Pictures] = {}
-      ebay_variations_set[:Pictures][:VariationSpecificName] = @wombat_product["options"].dup
-      ebay_variations_set[:Pictures][:VariationSpecificPictureSet] = ebay_product_variant_pictures(@wombat_product)
+      ebay_variations_set[:Pictures][:VariationSpecificName] = wombat_product["options"].dup if wombat_product["options"]
+      ebay_variations_set[:Pictures][:VariationSpecificPictureSet] = ebay_product_variant_pictures(wombat_product)
       ebay_variations_set
     end
 

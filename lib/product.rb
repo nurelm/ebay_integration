@@ -18,7 +18,7 @@ class Product
     @ebay_product[:ShippingDetails] = ebay_product_shipping_details(@config) if ebay_product_shipping_details_present?(@config)
     @ebay_product[:PaymentMethods] = ebay_product_payment_methods(@config) if @config["payment_methods"]
     @ebay_product[:PictureDetails] = ebay_product_picture_details(@wombat_product) if @wombat_product["images"].is_a?(Array)
-    @ebay_product[:ItemSpecifics][:NameValueList] = ebay_product_item_specifics(@wombat_product) if @wombat_product["properties"].is_a?(Array)
+    @ebay_product[:ItemSpecifics] = ebay_product_item_specifics(@wombat_product) if @wombat_product["properties"].is_a?(Array)
 
     if ebay_product_variants_present?(@wombat_product)
       @ebay_product[:Variations] = ebay_product_variantions_set(@wombat_product)
@@ -92,6 +92,7 @@ class Product
     end
 
     def ebay_product_initial_values(config, wombat_product)
+      ebay_product = {}
       { "country" => :Country, "currency" => :Currency, "listing_duration" => :ListingDuration, "location" => :Location, "dispatch_time_max" => :DispatchTimeMax, "paypal_email_address" => :PayPalEmailAddress, "condition_id" => :ConditionID }.each do |womabt_key, ebay_value|
         ebay_product[ebay_value] = config[womabt_key] if config[womabt_key]
       end

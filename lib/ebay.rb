@@ -17,7 +17,7 @@ class Ebay
   end
 
   def get_session_id
-    @ebay_client_api.get_session_i_d ru_name: 'VinSol-VinSole1c-e6f9--dftqd' #ru_name
+    @ebay_client_api.get_session_i_d ru_name: ru_name
   end
 
   def fetch_token

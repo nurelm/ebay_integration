@@ -9,7 +9,7 @@ class Order
   end
 
   def search_params
-    { mod_time_from: @config["ebay_mod_time_from"], mod_time_to: Time.now.to_s, include_final_value_fee: 'true', detail_level: 'ReturnAll', pagination: { entries_per_page: 25, page_number: @config['ebay_page_number'] } }
+    { mod_time_from: @config["ebay_mod_time_from"], mod_time_to: Time.now.to_s, include_final_value_fee: 'true', detail_level: 'ReturnAll', pagination: { entries_per_page: 100, page_number: '1' } }
   end
 
   def self.wombat_order_hash(ebay_order)

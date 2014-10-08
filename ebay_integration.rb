@@ -6,6 +6,26 @@ require './lib/ebay'
 class EbayIntegration < EndpointBase::Sinatra::Base
   enable :logging
 
+  post '/get_session_id' do
+    response = Ebay.new(@payload, @config).get_session_id
+
+    if response.success?
+      result 200, response.payload[:session_id]
+    else
+      result 500, 'Something Went Wrong. Please try again.'
+    end
+  end
+
+  post '/fetch_token' do
+    response = Ebay.new(@payload, @config).fetch_token
+
+    if response.success?
+      result 200, response.payload[:e_bay_auth_token]
+    else
+      result 500, 'Something Went Wrong. Please try again.'
+    end
+  end
+
   post '/get_products' do
     response = Ebay.new(@payload, @config).get_products
     if response.success?

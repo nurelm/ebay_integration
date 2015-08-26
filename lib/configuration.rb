@@ -10,7 +10,19 @@ class Configuration
   end
 
   def ebay_client_config
-    EbayClient::Configuration.new({ routing: :default, siteid: @config[:site_id], preload: false, version: VERSION, warning_level: :High, error_language: :en_US, api_keys: [{ token: @config[:user_token], devid: settings[:devid], appid: settings[:appid], certid: settings[:certid]}], savon_log_level: :info, url: url, wsdl_file: wsdl_file_url })
+    EbayClient::Configuration.new({ routing: :default,
+                                    siteid: @config[:site_id],
+                                    preload: false,
+                                    version: VERSION,
+                                    warning_level: :High,
+                                    error_language: :en_US,
+                                    api_keys: [{ token: @config[:user_token],
+                                                 devid: settings[:devid],
+                                                 appid: settings[:appid],
+                                                 certid: settings[:certid]}],
+                                    savon_log_level: :info,
+                                    url: url,
+                                    wsdl_file: wsdl_file_url })
   end
 
   private

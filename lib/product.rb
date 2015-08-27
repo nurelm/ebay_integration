@@ -8,7 +8,15 @@ class Product
   end
 
   def search_params
-    { start_time_from: @config["ebay_start_time_from"], start_time_to: @config["ebay_start_time_to"], end_time_from: Time.now.to_s, end_time_to: (Time.now + 30*24*60*60), include_variations: 'true', detail_level: 'ReturnAll', pagination: { entries_per_page: 25, page_number: @config['ebay_page_number'] } }
+    { start_time_from: @config["ebay_start_time_from"],
+      start_time_to: @config["ebay_start_time_to"],
+      end_time_from: Time.now.to_s,
+      end_time_to: (Time.now + 30*24*60*60),
+      include_variations: 'true',
+      detail_level: 'ReturnAll',
+      pagination: { entries_per_page: 25,
+                    page_number: @config['ebay_page_number'] }
+    }
   end
 
   def ebay_product
@@ -56,9 +64,12 @@ class Product
 
       wombat_product["id"] = wombat_product_id(ebay_product)
 
-      { "ebay_item_id" => :item_id, "name" => :title, "sku" => :sku, "description" => :description }.each do |wombat_key, ebay_value|
-        wombat_product[wombat_key] = ebay_product[ebay_value]
-      end
+      { "ebay_item_id" => :item_id,
+        "name" => :title,
+        "sku" => :sku,
+        "description" => :description }.each do |wombat_key, ebay_value|
+          wombat_product[wombat_key] = ebay_product[ebay_value]
+        end
 
       wombat_product
     end
@@ -78,7 +89,9 @@ class Product
     def self.wombat_variant(variation)
       wombat_variant = {}
 
-      { sku: :sku, start_price: :price, quantity: :quantity }.each do |wombat_key, ebay_value|
+      { sku: :sku,
+        start_price: :price,
+        quantity: :quantity }.each do |wombat_key, ebay_value|
         wombat_variant[wombat_key] = variation[ebay_value]
       end
 
@@ -93,7 +106,13 @@ class Product
 
     def ebay_product_initial_values(config, wombat_product)
       ebay_product = {}
-      { "country" => :Country, "currency" => :Currency, "listing_duration" => :ListingDuration, "location" => :Location, "dispatch_time_max" => :DispatchTimeMax, "paypal_email_address" => :PayPalEmailAddress, "condition_id" => :ConditionID }.each do |womabt_key, ebay_value|
+      { "country" => :Country,
+        "currency" => :Currency,
+        "listing_duration" => :ListingDuration,
+        "location" => :Location,
+        "dispatch_time_max" => :DispatchTimeMax,
+        "paypal_email_address" => :PayPalEmailAddress,
+        "condition_id" => :ConditionID }.each do |womabt_key, ebay_value|
         ebay_product[ebay_value] = config[womabt_key] if config[womabt_key]
       end
 
@@ -148,7 +167,9 @@ class Product
 
     def ebay_product_variant(variant)
       ebay_variant = {}
-      { "price" => :StartPrice, "quantity" => :Quantity, "sku" => :SKU }.each do |wombat_key, ebay_value|
+      { "price" => :StartPrice,
+        "quantity" => :Quantity,
+        "sku" => :SKU }.each do |wombat_key, ebay_value|
         ebay_variant[ebay_value] = variant[wombat_key]
       end
 

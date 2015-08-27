@@ -1,8 +1,16 @@
 require 'json'
 
 class Shipment
-  WOMBAT_SHIPMENT_INITIAL_VALUES_MAPPING = { "id" => :order_id, "ebay_order_id" => :order_id }
-  WOMBAT_SHIPMENT_SHIPPING_VALUES_MAPPING = { "first_name" => :name, "address1" => :street1, "address2" => :street2, "city" => :city, "state" => :state, "zipcode" => :postal_code, "country" => :country, "phone" => :phone }
+  WOMBAT_SHIPMENT_INITIAL_VALUES_MAPPING = { "id" => :order_id,
+                                             "ebay_order_id" => :order_id }
+  WOMBAT_SHIPMENT_SHIPPING_VALUES_MAPPING = { "first_name" => :name,
+                                              "address1" => :street1,
+                                              "address2" => :street2,
+                                              "city" => :city,
+                                              "state" => :state,
+                                              "zipcode" => :postal_code,
+                                              "country" => :country,
+                                              "phone" => :phone }
 
   def initialize(wombat_shipment, config={})
     @wombat_shipment = wombat_shipment["shipment"]
@@ -37,11 +45,13 @@ class Shipment
     end
 
     def ebay_shipment_details(wombat_shipment)
-      { :ShippedTime => @wombat_shipment["shipped_at"], :ShipmentTrackingDetails => ebay_shipment_tracking_details(@wombat_shipment) }
+      { :ShippedTime => @wombat_shipment["shipped_at"],
+        :ShipmentTrackingDetails => ebay_shipment_tracking_details(@wombat_shipment) }
     end
 
     def ebay_shipment_tracking_details(wombat_shipment)
-      { :ShipmentTrackingDetails => @wombat_shipment["tracking"], :ShippingCarrierUsed => @wombat_shipment["shipping_method"].gsub(/[^A-z0-9\ ]/, '') }
+      { :ShipmentTrackingDetails => @wombat_shipment["tracking"],
+        :ShippingCarrierUsed => @wombat_shipment["shipping_method"].gsub(/[^A-z0-9\ ]/, '') }
     end
 
     def self.wombat_shipment_initial_values(ebay_order)

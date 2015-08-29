@@ -10,7 +10,7 @@ class Configuration
   end
 
   def ebay_client_config
-    EbayClient::Configuration.new({ routing: :default,
+    EbayClient::Configuration.new(routing: :default,
                                     siteid: @config[:site_id],
                                     preload: false,
                                     version: VERSION,
@@ -22,7 +22,7 @@ class Configuration
                                                  certid: settings[:certid]}],
                                     savon_log_level: :info,
                                     url: url,
-                                    wsdl_file: wsdl_file_url })
+                                    wsdl_file: wsdl_file_url)
   end
 
   private

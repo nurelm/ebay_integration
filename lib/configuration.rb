@@ -1,9 +1,9 @@
 require 'json'
 
 class Configuration
-  SANDBOX_URL = 'https://api.sandbox.ebay.com/wsapi'
-  PRODUCTION_URL = 'https://api.ebay.com/wsapi'
-  VERSION = 883
+  SANDBOX_URL ||= 'https://api.sandbox.ebay.com/wsapi'
+  PRODUCTION_URL ||= 'https://api.ebay.com/wsapi'
+  VERSION ||= 883
 
   def initialize(config={})
     @config = config

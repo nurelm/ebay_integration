@@ -1,10 +1,10 @@
 require 'json'
 
 class Order
-  WOMBAT_ORDER_INITIAL_VALUES_MAPPING = { 'id' => :order_id,
+  WOMBAT_ORDER_INITIAL_VALUES_MAPPING ||= { 'id' => :order_id,
                                           'ebay_order_id' => :order_id,
                                           'placed_on' => :created_time }
-  WOMBAT_ORDER_SHIPPING_VALUES_MAPPING = { 'first_name' => :name,
+  WOMBAT_ORDER_SHIPPING_VALUES_MAPPING ||= { 'first_name' => :name,
                                            'address1' => :street1,
                                            'address2' => :street2,
                                            'city' => :city,
